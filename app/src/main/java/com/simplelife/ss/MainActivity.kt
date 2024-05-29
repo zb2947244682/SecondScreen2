@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
+import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,16 +61,15 @@ fun Content() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = CustomBackground)
-//            .background(color = Color.Red)
             .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
 
-            val (text1, row1, text2, col1, row2) = createRefs()
+            val (text1, row1, text2, col1, cl1) = createRefs()
 
-            Text(text = "屏幕列表",
+            Text(text = "屏幕列表（点击你要投放的屏幕）",
                 fontSize = 18.sp,
                 color = CustomTextPrimary,
                 fontWeight = FontWeight.Bold,
@@ -114,7 +115,7 @@ fun Content() {
                 )
             }
 
-            Text(text = "应用列表",
+            Text(text = "应用列表（点击你要投放的应用）",
                 fontSize = 18.sp,
                 color = CustomTextPrimary,
                 fontWeight = FontWeight.Bold,
@@ -129,7 +130,7 @@ fun Content() {
                 )
                 .constrainAs(col1) {
                     top.linkTo(text2.bottom, margin = 16.dp)
-                    bottom.linkTo(parent.bottom, margin = 216.dp)
+                    bottom.linkTo(cl1.top, margin = 16.dp)
                     height = Dimension.fillToConstraints
                 }
                 .verticalScroll(rememberScrollState())
@@ -164,12 +165,11 @@ fun Content() {
                 .background(
                     color = Color.White, shape = RoundedCornerShape(8.dp)
                 )
-                .constrainAs(row2) {
-                    top.linkTo(col1.bottom, margin = 16.dp)
+                .constrainAs(cl1) {
+                    bottom.linkTo(parent.bottom, margin = 16.dp)
                 }) {
 
-
-                val (image1, input1, btn1, btn2) = createRefs()
+                val (input1, btn2) = createRefs()
 
                 var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
 
@@ -182,19 +182,18 @@ fun Content() {
                     },
                     textStyle = TextStyle(
                         fontSize = 20.sp,
-                        color = Color.Black,
+                        color = CustomTextPrimary,
                     ),
                     maxLines = 1,
                     modifier = Modifier
-//                        .background(Color.Red)
                         .wrapContentHeight(align = Alignment.CenterVertically)
                         .constrainAs(input1) {
                             start.linkTo(parent.start, margin = 16.dp)
                             top.linkTo(parent.top, margin = 10.dp)
                             bottom.linkTo(parent.bottom, margin = 10.dp)
+                            end.linkTo(btn2.start, margin = 10.dp)
                             height = Dimension.fillToConstraints
                             width = Dimension.fillToConstraints
-                            end.linkTo(btn2.start, margin = 10.dp)
                         },
                 )
 
