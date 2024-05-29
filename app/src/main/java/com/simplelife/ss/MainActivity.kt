@@ -1,5 +1,6 @@
 package com.simplelife.ss
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.simplelife.ss.bean.ScreenItem
 import com.simplelife.ss.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -50,6 +53,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Content() {
+
+    var displayList = remember {
+        mutableStateOf(listOf<ScreenItem>())
+    }
+
+    var context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,10 +83,12 @@ fun Content() {
 
 
 
-
-
-
-
+            LaunchedEffect(Unit) {
+                // 执行一次性操作，比如初始化数据
+                // 此处可以调用挂起函数
+                displayList.value = loadScreenListData(context)
+                // 使用数据更新 UI 状态
+            }
 
 
             //屏幕列表
@@ -104,30 +116,40 @@ fun Content() {
                 .horizontalScroll(rememberScrollState())
 
             ) {
-                ScreenItem(
-                    isActive = true,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
-                )
-                ScreenItem(
-                    isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
-                )
-                ScreenItem(
-                    isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
-                )
-                ScreenItem(
-                    isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
-                )
+
+                displayList.value.forEach { display ->
+                    ScreenItem(
+                        isActive = false,
+                        name = display.name,
+                        resolution = display.resolution,
+                        displayId = display.displayId
+                    )
+                }
+//                ScreenItem(
+//                    isActive = true,
+//                    name = "显示器1",
+//                    resolution = "1920x1080",
+//                    displayId = 1,
+//                )
+//                ScreenItem(
+//                    isActive = false,
+//                    name = "显示器1",
+//                    resolution = "1920x1080",
+//                    displayId = 1,
+//                )
+//                ScreenItem(
+//                    isActive = false,
+//                    name = "显示器1",
+//                    resolution = "1920x1080",
+//                    displayId = 1,
+//                )
+//                ScreenItem(
+//                    isActive = false,
+//                    name = "显示器1",
+//                    resolution = "1920x1080",
+//                    displayId = 1,
+//                )
+
             }
 
             Text(text = "应用列表（点击你要投放的应用）",
@@ -137,15 +159,6 @@ fun Content() {
                 modifier = Modifier.constrainAs(text2) {
                     top.linkTo(row1.bottom, margin = 16.dp)
                 })
-
-
-
-
-
-
-
-
-
 
 
             //应用列表
@@ -196,14 +209,6 @@ fun Content() {
                     isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
             }
-
-
-
-
-
-
-
-
 
 
             //搜索框
@@ -272,15 +277,6 @@ fun Content() {
             }
 
 
-
-
-
-
-
-
-
-
-
             //悬浮的按钮
             //悬浮的按钮
             //悬浮的按钮
@@ -315,13 +311,18 @@ fun Content() {
     }
 }
 
-
-
-
-
-
-
-
+fun loadScreenListData(context: Context): List<ScreenItem> {
+    val displayList = DisplayUtils.getAllDisplays(context)
+    return displayList.map { display ->
+        val resolution =
+            "${display.mode.physicalWidth}x${display.mode.physicalHeight}" // 假设display对象有width和height属性
+        ScreenItem(
+            displayId = display.displayId,
+            name = display.name,
+            resolution = resolution
+        )
+    }
+}
 
 
 //预览
@@ -346,18 +347,6 @@ fun DefaultPreview() {
         Content()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //圆形按钮
@@ -406,18 +395,6 @@ fun RoundedIconButton(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //APP项目
@@ -478,17 +455,6 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
             })
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 //屏幕项目
