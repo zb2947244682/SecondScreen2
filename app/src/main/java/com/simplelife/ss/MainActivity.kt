@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,11 +33,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.simplelife.ss.bean.AppItemBean
 import com.simplelife.ss.bean.ScreenItemBean
 import com.simplelife.ss.ui.theme.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +61,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Content() {
+    // 创建一个可变状态用于追踪 loading 状态
+    val isLoading = remember { mutableStateOf(false) }
 
     var displayList = remember {
         mutableStateOf(listOf<ScreenItemBean>())
@@ -67,6 +75,23 @@ fun Content() {
 
     var context = LocalContext.current
 
+
+//        if (isLoading.value) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(enabled = false, onClick = {})
+            .background(CustomMask)
+            .zIndex(1f)
+    ) {
+        CircularProgressIndicator(
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
+//        }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,11 +99,18 @@ fun Content() {
             .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
 
+
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
 
             val (text1, row1, text2, col1, cl1) = createRefs()
+
+
+
+
+
+
 
             Text(text = "屏幕列表（点击你要投放的屏幕）",
                 fontSize = 18.sp,
@@ -306,29 +338,34 @@ fun Content() {
 
 
             //刷新按钮
-            RoundedIconButton(
-                R.drawable.ic_refresh,
-                CustomButtonPrimary,
-                {
+            RoundedIconButton(R.drawable.ic_refresh, CustomButtonPrimary, {
+                // 同时将 loading 状态设置为 true
+                isLoading.value = true
+
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    delay(500)
                     displayList.value = loadDisplayListData(context)
                     appList.value = loadAppListData(context, textFieldValue.text)
-                },
-                modifier = Modifier.constrainAs(rib2) {
-                    end.linkTo(col1.end, margin = 10.dp)
-                    bottom.linkTo(rib1.top, margin = 10.dp)
-                })
+                    // 耗时操作完成后将 loading 状态设置为 false
+                    isLoading.value = false
+                    // 按钮事件结束后将按钮点击状态设置为 false
+                }
+
+
+            }, modifier = Modifier.constrainAs(rib2) {
+                end.linkTo(col1.end, margin = 10.dp)
+                bottom.linkTo(rib1.top, margin = 10.dp)
+            })
 
             //投屏按钮
-            RoundedIconButton(
-                R.drawable.ic_cast,
-                CustomButtonSuccess,
-                {
-                    displayList.value = loadDisplayListData(context)
-                },
-                modifier = Modifier.constrainAs(rib1) {
-                    end.linkTo(col1.end, margin = 10.dp)
-                    bottom.linkTo(col1.bottom, margin = 10.dp)
-                })
+            RoundedIconButton(R.drawable.ic_cast, CustomButtonSuccess, {
+                displayList.value = loadDisplayListData(context)
+            }, modifier = Modifier.constrainAs(rib1) {
+                end.linkTo(col1.end, margin = 10.dp)
+                bottom.linkTo(col1.bottom, margin = 10.dp)
+            })
 
         }
     }
@@ -358,9 +395,7 @@ fun loadDisplayListData(context: Context): List<ScreenItemBean> {
         val resolution =
             "${display.mode.physicalWidth}x${display.mode.physicalHeight}" // 假设display对象有width和height属性
         ScreenItemBean(
-            displayId = display.displayId,
-            name = display.name,
-            resolution = resolution
+            displayId = display.displayId, name = display.name, resolution = resolution
         )
     }
 }
@@ -437,9 +472,7 @@ fun DefaultPreview() {
 //圆形按钮
 @Composable
 fun RoundedIconButton(
-    drawableId: Int,
-    color: Color,
-    onClick: () -> Unit, modifier: Modifier = Modifier
+    drawableId: Int, color: Color, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -452,8 +485,7 @@ fun RoundedIconButton(
         Box(
             modifier = Modifier
                 .size(64.dp)
-                .background(color),
-            contentAlignment = Alignment.Center
+                .background(color), contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(id = drawableId),

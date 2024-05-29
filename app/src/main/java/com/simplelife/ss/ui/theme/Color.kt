@@ -13,3 +13,5 @@ var CustomButtonCancel = Color(0XFFEFEFEF)
 
 var CustomTextPrimary = Color(0XFF333333)
 var CustomTextLight = Color(0XFF666666)
+
+var CustomMask=Color(0x55000000)
