@@ -2,7 +2,6 @@ package com.simplelife.ss
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,16 +9,32 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,11 +53,19 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.simplelife.ss.bean.AppItemBean
 import com.simplelife.ss.bean.ScreenItemBean
-import com.simplelife.ss.ui.theme.*
+import com.simplelife.ss.ui.theme.CustomActive
+import com.simplelife.ss.ui.theme.CustomBackground
+import com.simplelife.ss.ui.theme.CustomButtonPrimary
+import com.simplelife.ss.ui.theme.CustomButtonSuccess
+import com.simplelife.ss.ui.theme.CustomMask
+import com.simplelife.ss.ui.theme.CustomTextLight
+import com.simplelife.ss.ui.theme.CustomTextPrimary
+import com.simplelife.ss.ui.theme.SecondScreenTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,21 +99,19 @@ fun Content() {
     var context = LocalContext.current
 
 
-//        if (isLoading.value) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(enabled = false, onClick = {})
-            .background(CustomMask)
-            .zIndex(1f)
-    ) {
-        CircularProgressIndicator(
-            color = Color.White,
+    if (isLoading.value) {
+        Box(
             modifier = Modifier
-                .align(Alignment.Center)
-        )
+                .fillMaxSize()
+                .clickable(enabled = false, onClick = {})
+                .background(CustomMask)
+                .zIndex(1f)
+        ) {
+            CircularProgressIndicator(
+                color = Color.White, modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
-//        }
 
     Box(
         modifier = Modifier
@@ -120,12 +141,19 @@ fun Content() {
 
                 })
 
+
             LaunchedEffect(Unit) {
-                // 执行一次性操作，比如初始化数据
-                // 此处可以调用挂起函数
-                displayList.value = loadDisplayListData(context)
-                appList.value = loadAppListData(context, textFieldValue.text)
-                // 使用数据更新 UI 状态
+                isLoading.value = true
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    delay(500)
+                    displayList.value = loadDisplayListData(context)
+                    appList.value = loadAppListData(context, textFieldValue.text)
+                    // 耗时操作完成后将 loading 状态设置为 false
+                    isLoading.value = false
+                    // 按钮事件结束后将按钮点击状态设置为 false
+                }
             }
 
 
@@ -306,7 +334,15 @@ fun Content() {
 
                 //放大镜按钮
                 IconButton(onClick = {
-                    appList.value = loadAppListData(context, textFieldValue.text)
+                    isLoading.value = true
+                    CoroutineScope(Dispatchers.Default).launch {
+
+                        delay(500)
+                        appList.value = loadAppListData(context, textFieldValue.text)
+                        // 耗时操作完成后将 loading 状态设置为 false
+                        isLoading.value = false
+                        // 按钮事件结束后将按钮点击状态设置为 false
+                    }
                 }, modifier = Modifier
                     .size(48.dp)
                     .constrainAs(btn2) {
