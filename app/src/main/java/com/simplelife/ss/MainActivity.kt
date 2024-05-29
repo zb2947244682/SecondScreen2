@@ -63,8 +63,6 @@ fun Content() {
 
             val (text1, row1, text2, col1, cl1) = createRefs()
 
-
-
             Text(text = "屏幕列表（点击你要投放的屏幕）",
                 fontSize = 18.sp,
                 color = CustomTextLight,
@@ -73,6 +71,27 @@ fun Content() {
 
                 })
 
+
+
+
+
+
+
+
+
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
+            //屏幕列表
             Row(modifier = Modifier
                 .constrainAs(row1) {
                     top.linkTo(text1.bottom, margin = 16.dp)
@@ -119,6 +138,29 @@ fun Content() {
                     top.linkTo(row1.bottom, margin = 16.dp)
                 })
 
+
+
+
+
+
+
+
+
+
+
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
+            //应用列表
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -155,6 +197,26 @@ fun Content() {
                 )
             }
 
+
+
+
+
+
+
+
+
+
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
+            //搜索框
             ConstraintLayout(modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
@@ -210,8 +272,27 @@ fun Content() {
             }
 
 
-            var (rib1, rib2) = createRefs()
 
+
+
+
+
+
+
+
+
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            //悬浮的按钮
+            var (rib1, rib2) = createRefs()
             RoundedIconButton(
                 R.drawable.ic_cast,
                 CustomButtonSuccess,
@@ -235,6 +316,29 @@ fun Content() {
 }
 
 
+
+
+
+
+
+
+
+
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
+//预览
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -243,6 +347,37 @@ fun DefaultPreview() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
+//圆形按钮
 @Composable
 fun RoundedIconButton(
     drawableId: Int,
@@ -273,6 +408,29 @@ fun RoundedIconButton(
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
+//APP项目
 @Composable
 fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () -> Unit = {}) {
     val bgColor = if (!isActive) Color.White else CustomActive
@@ -321,6 +479,35 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
+//屏幕项目
 @Composable
 fun ScreenItem(
     name: String, resolution: String, displayId: Int, isActive: Boolean, onClick: () -> Unit = {}
