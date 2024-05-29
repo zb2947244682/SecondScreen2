@@ -103,7 +103,7 @@ fun Content() {
     }
 
     var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
-    var Status by remember { mutableStateOf(StatusBean("", "", 0, "")) }
+    var Status by remember { mutableStateOf(StatusBean("", "", -1, "")) }
 
     var context = LocalContext.current
 
@@ -194,13 +194,28 @@ fun Content() {
             ) {
 
                 displayList.value.forEach { display ->
-                    ScreenItem(isActive = false,
+                    var isActive: Boolean = false
+
+                    if (Status.displayId != -1) {//已经初始化了
+                        if (Status.displayId == display.displayId) {
+                            isActive = true
+                        }
+                    }
+
+                    ScreenItem(isActive = isActive,
                         name = display.name,
                         resolution = display.resolution,
                         displayId = display.displayId,
                         onClick = { displayId, displayName ->
-                            Status.displayName = displayName
-                            Status.displayId = displayId
+//                            Status.displayName = displayName
+//                            Status.displayId = displayId
+
+                            Status = StatusBean(
+                                Status.packageName,
+                                Status.appName,
+                                displayId,
+                                displayName
+                            )
                         })
                 }
 //                ScreenItem(
@@ -249,12 +264,22 @@ fun Content() {
             ) {
 
                 appList.value.forEach { app ->
-                    AppItem(isActive = false,
+                    var isActive: Boolean = false
+
+                    if (Status.packageName == app.packageName) {
+                        isActive = true
+                    }
+
+                    AppItem(isActive = isActive,
                         name = app.name,
                         packageName = app.packageName,
                         onClick = { packageName, appName ->
-                            Status.packageName = packageName
-                            Status.appName = appName
+                            Status = StatusBean(
+                                packageName,
+                                appName,
+                                Status.displayId,
+                                Status.displayName
+                            )
                         })
                 }
 
@@ -408,6 +433,8 @@ fun Content() {
 fun loadDisplayListData(context: Context): List<ScreenItemBean> {
 
     val displayList = DisplayUtils.getAllDisplays(context)
+
+    Log.d("123123", "loadDisplayListData")
 
     return displayList.map { display ->
         val resolution =
