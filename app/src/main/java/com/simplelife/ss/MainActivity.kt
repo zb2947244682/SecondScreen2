@@ -9,7 +9,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.simplelife.ss.bean.ScreenItem
+import com.simplelife.ss.bean.AppItemBean
+import com.simplelife.ss.bean.ScreenItemBean
 import com.simplelife.ss.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -57,7 +57,10 @@ class MainActivity : ComponentActivity() {
 fun Content() {
 
     var displayList = remember {
-        mutableStateOf(listOf<ScreenItem>())
+        mutableStateOf(listOf<ScreenItemBean>())
+    }
+    var appList = remember {
+        mutableStateOf(listOf<AppItemBean>())
     }
 
     var context = LocalContext.current
@@ -88,7 +91,8 @@ fun Content() {
             LaunchedEffect(Unit) {
                 // 执行一次性操作，比如初始化数据
                 // 此处可以调用挂起函数
-                displayList.value = loadScreenListData(context)
+                displayList.value = loadDisplayListData(context)
+                appList.value = loadAppListData(context)
                 // 使用数据更新 UI 状态
             }
 
@@ -189,27 +193,32 @@ fun Content() {
                 .verticalScroll(rememberScrollState())
 
             ) {
-                AppItem(
-                    isActive = true, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
-                AppItem(
-                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-                )
+
+                appList.value.forEach { app ->
+                    AppItem(
+                        isActive = false, name = app.name, packageName = app.packageName
+                    )
+                }
+
+
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
+//                AppItem(
+//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+//                )
             }
 
 
@@ -292,12 +301,14 @@ fun Content() {
             //悬浮的按钮
             var (rib1, rib2) = createRefs()
 
+
             //刷新按钮
             RoundedIconButton(
                 R.drawable.ic_refresh,
                 CustomButtonPrimary,
                 {
-                    displayList.value = loadScreenListData(context)
+                    displayList.value = loadDisplayListData(context)
+                    appList.value = loadAppListData(context)
                 },
                 modifier = Modifier.constrainAs(rib2) {
                     end.linkTo(col1.end, margin = 10.dp)
@@ -309,7 +320,7 @@ fun Content() {
                 R.drawable.ic_cast,
                 CustomButtonSuccess,
                 {
-                    displayList.value = loadScreenListData(context)
+                    displayList.value = loadDisplayListData(context)
                 },
                 modifier = Modifier.constrainAs(rib1) {
                     end.linkTo(col1.end, margin = 10.dp)
@@ -336,20 +347,43 @@ fun Content() {
 //读取屏幕列表
 //读取屏幕列表
 //读取屏幕列表
-fun loadScreenListData(context: Context): List<ScreenItem> {
-
-    Log.d("123123", "loadScreenListData")
+fun loadDisplayListData(context: Context): List<ScreenItemBean> {
 
     val displayList = DisplayUtils.getAllDisplays(context)
 
     return displayList.map { display ->
         val resolution =
             "${display.mode.physicalWidth}x${display.mode.physicalHeight}" // 假设display对象有width和height属性
-        ScreenItem(
+        ScreenItemBean(
             displayId = display.displayId,
             name = display.name,
             resolution = resolution
         )
+    }
+}
+
+
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+//读取应用列表
+fun loadAppListData(context: Context): List<AppItemBean> {
+
+    val appList = AppUtils.getApps(context)
+
+    return appList.map { app ->
+        AppItemBean(app.name, app.packageName)
     }
 }
 
@@ -475,7 +509,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
             })
 
 
-        Text(text = "分辨率: $packageName",
+        Text(text = "包名: $packageName",
             color = textColor,
             fontSize = 12.sp,
             modifier = Modifier.constrainAs(text2) {

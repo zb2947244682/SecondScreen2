@@ -1,6 +1,6 @@
 package com.simplelife.ss.bean
 
-data class ScreenItem(
+data class ScreenItemBean(
     val name: String,
     val resolution: String,
     val displayId: Int
