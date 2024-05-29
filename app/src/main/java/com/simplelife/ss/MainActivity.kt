@@ -40,8 +40,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -106,8 +109,6 @@ fun Content() {
     var Status by remember { mutableStateOf(StatusBean("", "", -1, "")) }
 
     var context = LocalContext.current
-
-
 
     if (isLoading.value) {
         Box(
@@ -207,14 +208,9 @@ fun Content() {
                         resolution = display.resolution,
                         displayId = display.displayId,
                         onClick = { displayId, displayName ->
-//                            Status.displayName = displayName
-//                            Status.displayId = displayId
 
                             Status = StatusBean(
-                                Status.packageName,
-                                Status.appName,
-                                displayId,
-                                displayName
+                                Status.packageName, Status.appName, displayId, displayName
                             )
                         })
                 }
@@ -275,10 +271,7 @@ fun Content() {
                         packageName = app.packageName,
                         onClick = { packageName, appName ->
                             Status = StatusBean(
-                                packageName,
-                                appName,
-                                Status.displayId,
-                                Status.displayName
+                                packageName, appName, Status.displayId, Status.displayName
                             )
                         })
                 }
@@ -312,8 +305,6 @@ fun Content() {
 
                 val (input1, btn2) = createRefs()
 
-
-
                 BasicTextField(
                     value = textFieldValue,
                     onValueChange = { it ->
@@ -338,12 +329,10 @@ fun Content() {
                         },
                 )
 
-
                 //放大镜按钮
                 IconButton(onClick = {
                     isLoading.value = true
                     CoroutineScope(Dispatchers.Default).launch {
-
                         delay(500)
                         appList.value = loadAppListData(context, textFieldValue.text)
                         // 耗时操作完成后将 loading 状态设置为 false
