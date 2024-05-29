@@ -2,6 +2,7 @@ package com.simplelife.ss
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -82,6 +83,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+class StatusBean(
+    var packageName: String,
+    var appName: String,
+    var displayId: Int,
+    var displayName: String,
+)
+
 @Composable
 fun Content() {
     // 创建一个可变状态用于追踪 loading 状态
@@ -95,8 +103,10 @@ fun Content() {
     }
 
     var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+    var Status by remember { mutableStateOf(StatusBean("", "", 0, "")) }
 
     var context = LocalContext.current
+
 
 
     if (isLoading.value) {
@@ -184,33 +194,17 @@ fun Content() {
             ) {
 
                 displayList.value.forEach { display ->
-                    ScreenItem(
-                        isActive = false,
+                    ScreenItem(isActive = false,
                         name = display.name,
                         resolution = display.resolution,
-                        displayId = display.displayId
-                    )
+                        displayId = display.displayId,
+                        onClick = { displayId, displayName ->
+                            Status.displayName = displayName
+                            Status.displayId = displayId
+                        })
                 }
 //                ScreenItem(
 //                    isActive = true,
-//                    name = "显示器1",
-//                    resolution = "1920x1080",
-//                    displayId = 1,
-//                )
-//                ScreenItem(
-//                    isActive = false,
-//                    name = "显示器1",
-//                    resolution = "1920x1080",
-//                    displayId = 1,
-//                )
-//                ScreenItem(
-//                    isActive = false,
-//                    name = "显示器1",
-//                    resolution = "1920x1080",
-//                    displayId = 1,
-//                )
-//                ScreenItem(
-//                    isActive = false,
 //                    name = "显示器1",
 //                    resolution = "1920x1080",
 //                    displayId = 1,
@@ -255,27 +249,15 @@ fun Content() {
             ) {
 
                 appList.value.forEach { app ->
-                    AppItem(
-                        isActive = false, name = app.name, packageName = app.packageName
-                    )
+                    AppItem(isActive = false,
+                        name = app.name,
+                        packageName = app.packageName,
+                        onClick = { packageName, appName ->
+                            Status.packageName = packageName
+                            Status.appName = appName
+                        })
                 }
 
-
-//                AppItem(
-//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-//                )
-//                AppItem(
-//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-//                )
-//                AppItem(
-//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-//                )
-//                AppItem(
-//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-//                )
-//                AppItem(
-//                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
-//                )
 //                AppItem(
 //                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
 //                )
@@ -545,7 +527,12 @@ fun RoundedIconButton(
 //APP项目
 //APP项目
 @Composable
-fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () -> Unit = {}) {
+fun AppItem(
+    name: String,
+    packageName: String,
+    isActive: Boolean,
+    onClick: (packageName: String, appName: String) -> Unit = { _, _ -> }
+) {
     val bgColor = if (!isActive) Color.White else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
     var painterId = if (isActive) R.drawable.ic_app_light else R.drawable.ic_app
@@ -558,7 +545,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
             .background(
                 color = bgColor, shape = RoundedCornerShape(8.dp)
             )
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onClick(packageName, name) })
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
@@ -614,7 +601,11 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
 //屏幕项目
 @Composable
 fun ScreenItem(
-    name: String, resolution: String, displayId: Int, isActive: Boolean, onClick: () -> Unit = {}
+    name: String,
+    resolution: String,
+    displayId: Int,
+    isActive: Boolean,
+    onClick: (displayId: Int, displayName: String) -> Unit = { _, _ -> }
 ) {
     val bgColor = if (!isActive) Color.White else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
@@ -628,7 +619,9 @@ fun ScreenItem(
             .background(
                 color = bgColor, shape = RoundedCornerShape(8.dp)
             )
-            .clickable(onClick = onClick)
+            .clickable(onClick = {
+                onClick(displayId, name)
+            })
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
