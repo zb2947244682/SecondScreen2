@@ -73,28 +73,28 @@ fun Content() {
 
             ) {
                 ScreenItem(
+                    isActive = true,
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
-                    icon = painterResource(id = R.drawable.ic_screen)
                 )
                 ScreenItem(
+                    isActive = false,
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
-                    icon = painterResource(id = R.drawable.ic_screen)
                 )
                 ScreenItem(
+                    isActive = false,
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
-                    icon = painterResource(id = R.drawable.ic_screen)
                 )
                 ScreenItem(
+                    isActive = false,
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
-                    icon = painterResource(id = R.drawable.ic_screen)
                 )
             }
         }
@@ -111,19 +111,24 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun ScreenItem(name: String, resolution: String, displayId: Int, icon: Painter) {
+fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boolean) {
+    val bgColor = if (!isActive) Color.White else CustomBackgroundLight
+    var textColor = if (!isActive) CustomTextLight else CustomTextPrimary
+    var painterId = if (!isActive) R.drawable.ic_screen_light else R.drawable.ic_screen
+
     ConstraintLayout(
         modifier = Modifier
             .height(100.dp)
             .wrapContentWidth()
             .padding(10.dp)
             .background(
-                color = CustomBackgroundLight, shape = RoundedCornerShape(8.dp)
+                color = bgColor, shape = RoundedCornerShape(8.dp)
             )
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
-        Image(painter = icon, contentDescription = null, // 无需提供描述
+        Image(painter = painterResource(id = painterId),
+            contentDescription = null, // 无需提供描述
             modifier = Modifier
                 .size(100.dp)
                 .constrainAs(image1) {
@@ -135,12 +140,14 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, icon: Painter) 
             text = name,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
+            color = textColor,
             modifier = Modifier.constrainAs(text1) {
                 start.linkTo(image1.end)
                 top.linkTo(image1.top, margin = 6.dp)
             })
 
         Text(text = "分辨率: $resolution",
+            color = textColor,
             fontSize = 12.sp, modifier = Modifier.constrainAs(text2) {
                 start.linkTo(image1.end)
                 top.linkTo(text1.bottom)
@@ -149,6 +156,7 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, icon: Painter) 
             })
 
         Text(text = "显示ID: $displayId",
+            color = textColor,
             fontSize = 12.sp, modifier = Modifier.constrainAs(text3) {
 
                 start.linkTo(image1.end)
