@@ -48,17 +48,11 @@ fun Content() {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
+            Text(
+                text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
 
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                fontWeight = FontWeight.Bold
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -97,6 +91,16 @@ fun Content() {
                     displayId = 1,
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
+
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
