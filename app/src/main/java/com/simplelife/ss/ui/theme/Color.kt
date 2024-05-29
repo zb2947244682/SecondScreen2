@@ -6,6 +6,7 @@ var CustomBackground = Color(0XFFF3F3F3)
 var CustomBackgroundLight = Color(0XFFEFEFEF)
 
 var CustomActive = Color(0XFF1296db)
+var CustomDisActive = Color(0X99EFEFEF)
 
 var CustomButtonPrimary = Color(0XFF1296db)
 var CustomButtonSuccess = Color(0XFF2ba245)

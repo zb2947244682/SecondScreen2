@@ -61,6 +61,7 @@ import com.simplelife.ss.ui.theme.CustomActive
 import com.simplelife.ss.ui.theme.CustomBackground
 import com.simplelife.ss.ui.theme.CustomButtonPrimary
 import com.simplelife.ss.ui.theme.CustomButtonSuccess
+import com.simplelife.ss.ui.theme.CustomDisActive
 import com.simplelife.ss.ui.theme.CustomMask
 import com.simplelife.ss.ui.theme.CustomTextLight
 import com.simplelife.ss.ui.theme.CustomTextPrimary
@@ -393,7 +394,10 @@ fun Content() {
 
             //投屏按钮
             RoundedIconButton(R.drawable.ic_cast, CustomButtonSuccess, {
-                displayList.value = loadDisplayListData(context)
+                if (Status.packageName != "" && Status.displayId != -1) {
+                    AppUtils.launchApp(context, Status.packageName, Status.displayId)
+                }
+
             }, modifier = Modifier.constrainAs(rib1) {
                 end.linkTo(col1.end, margin = 10.dp)
                 bottom.linkTo(col1.bottom, margin = 10.dp)
@@ -549,7 +553,7 @@ fun AppItem(
     isActive: Boolean,
     onClick: (packageName: String, appName: String) -> Unit = { _, _ -> }
 ) {
-    val bgColor = if (!isActive) Color.White else CustomActive
+    val bgColor = if (!isActive) CustomDisActive else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
     var painterId = if (isActive) R.drawable.ic_app_light else R.drawable.ic_app
 
@@ -623,7 +627,7 @@ fun ScreenItem(
     isActive: Boolean,
     onClick: (displayId: Int, displayName: String) -> Unit = { _, _ -> }
 ) {
-    val bgColor = if (!isActive) Color.White else CustomActive
+    val bgColor = if (!isActive) CustomDisActive else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
     var painterId = if (isActive) R.drawable.ic_screen_light else R.drawable.ic_screen
 
