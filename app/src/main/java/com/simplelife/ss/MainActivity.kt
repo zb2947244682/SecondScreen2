@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,8 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +64,7 @@ fun Content() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -72,7 +74,30 @@ fun Content() {
                     )
 
             ) {
-
+                CustomItem(
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                    icon = painterResource(id = R.drawable.ic_screen)
+                )
+                CustomItem(
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                    icon = painterResource(id = R.drawable.ic_screen)
+                )
+                CustomItem(
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                    icon = painterResource(id = R.drawable.ic_screen)
+                )
+                CustomItem(
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                    icon = painterResource(id = R.drawable.ic_screen)
+                )
             }
         }
     }
@@ -84,5 +109,31 @@ fun Content() {
 fun DefaultPreview() {
     SecondScreenTheme() {
         Content()
+    }
+}
+
+@Composable
+fun CustomItem(name: String, resolution: String, displayId: Int, icon: Painter) {
+    Box(
+        modifier = Modifier
+            .height(100.dp)
+            .wrapContentWidth()
+            .padding(10.dp)
+            .background(
+                color = Color.Gray,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Image(
+            painter = icon,
+            contentDescription = null, // 无需提供描述
+            modifier = Modifier.size(50.dp)
+        )
+
+        Text(text = name, fontWeight = FontWeight.Bold)
+
+        Text(text = "分辨率: $resolution")
+
+        Text(text = "显示ID: $displayId")
     }
 }
