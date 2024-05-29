@@ -6,13 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.simplelife.ss.ui.theme.*
 import com.simplelife.ss.ui.theme.SecondScreenTheme
 
@@ -36,38 +40,39 @@ fun Content() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = CustomBackground)
-            .padding(top = 50.dp)
+            .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .height(50.dp)
                 .fillMaxWidth()
         ) {
-            Box(
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .wrapContentHeight()
             ) {
                 Text(
                     text = "屏幕列表",
-                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 18.sp,
                     color = CustomTextPrimary,
+
                     fontWeight = FontWeight.Bold
                 )
             }
-            Box(
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
             ) {
-                Text(
-                    text = "应用列表",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = CustomTextPrimary,
-                    fontWeight = FontWeight.Bold
-                )
+
             }
         }
     }
