@@ -123,29 +123,40 @@ fun Content() {
                     .verticalScroll(rememberScrollState())
 
             ) {
-                ScreenItem(
+                AppItem(
                     isActive = true,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
                 )
-                ScreenItem(
+                AppItem(
                     isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
                 )
-                ScreenItem(
+                AppItem(
                     isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
                 )
-                ScreenItem(
+                AppItem(
                     isActive = false,
-                    name = "显示器1",
-                    resolution = "1920x1080",
-                    displayId = 1,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
+                )
+                AppItem(
+                    isActive = false,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
+                )
+                AppItem(
+                    isActive = false,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
+                )
+                AppItem(
+                    isActive = false,
+                    name = "腾讯QQ",
+                    packageName = "com.qq.com"
                 )
             }
         }
@@ -161,11 +172,60 @@ fun DefaultPreview() {
     }
 }
 
+
+@Composable
+fun AppItem(name: String, packageName: String, isActive: Boolean) {
+    val bgColor = if (!isActive) Color.White else CustomActive
+    var textColor = if (!isActive) CustomTextLight else Color.White
+    var painterId = if (isActive) R.drawable.ic_app_light else R.drawable.ic_app
+
+    ConstraintLayout(
+        modifier = Modifier
+            .height(100.dp)
+            .fillMaxWidth()
+            .padding(10.dp)
+            .background(
+                color = bgColor, shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        val (image1, text1, text2, text3) = createRefs()
+
+
+        Image(painter = painterResource(id = painterId),
+            contentDescription = null, // 无需提供描述
+            modifier = Modifier
+                .size(48.dp)
+                .constrainAs(image1) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start, margin = 16.dp)
+                    centerVerticallyTo(parent)
+                })
+
+        Text(
+            text = name,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = textColor,
+            modifier = Modifier.constrainAs(text1) {
+                start.linkTo(image1.end, margin = 16.dp)
+                top.linkTo(image1.top, margin = 0.dp)
+            })
+
+
+        Text(text = "分辨率: $packageName",
+            color = textColor,
+            fontSize = 12.sp, modifier = Modifier.constrainAs(text2) {
+                start.linkTo(image1.end, margin = 16.dp)
+                bottom.linkTo(image1.bottom)
+            })
+    }
+}
+
 @Composable
 fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boolean) {
-    val bgColor = if (!isActive) Color.White else CustomBackgroundLight
-    var textColor = if (!isActive) CustomTextLight else CustomTextPrimary
-    var painterId = if (!isActive) R.drawable.ic_screen_light else R.drawable.ic_screen
+    val bgColor = if (!isActive) Color.White else CustomActive
+    var textColor = if (!isActive) CustomTextLight else Color.White
+    var painterId = if (isActive) R.drawable.ic_screen_light else R.drawable.ic_screen
 
     ConstraintLayout(
         modifier = Modifier
