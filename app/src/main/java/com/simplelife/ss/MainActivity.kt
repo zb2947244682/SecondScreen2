@@ -1,6 +1,8 @@
 package com.simplelife.ss
 
 import android.content.Context
+import android.content.Intent
+import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -85,7 +87,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val areNotificationsEnabled = NotificationUtils.isNotificationEnabled(this)
+
+        if (!areNotificationsEnabled) {
+            ToastUtils.showShort(this, "打开通知获取最佳体验")
+//            NotificationUtils.openNotificationSettings(this)
+        } else {
+            NotificationUtils.createNotificationChannel(this)
+
+            NotificationUtils.showNotification(this, WakeActivity())
+        }
+    }
 }
+
 
 class StatusBean(
     var packageName: String,
@@ -96,6 +114,7 @@ class StatusBean(
 
 @Composable
 fun Content() {
+
     // 创建一个可变状态用于追踪 loading 状态
     val isLoading = remember { mutableStateOf(false) }
 
@@ -210,6 +229,8 @@ fun Content() {
                         displayId = display.displayId,
                         onClick = { displayId, displayName ->
 
+                            GlobalUtils.displayId = displayId
+
                             Status = StatusBean(
                                 Status.packageName, Status.appName, displayId, displayName
                             )
@@ -271,6 +292,7 @@ fun Content() {
                         name = app.name,
                         packageName = app.packageName,
                         onClick = { packageName, appName ->
+                            GlobalUtils.packageName = packageName
                             Status = StatusBean(
                                 packageName, appName, Status.displayId, Status.displayName
                             )
@@ -426,8 +448,6 @@ fun Content() {
 fun loadDisplayListData(context: Context): List<ScreenItemBean> {
 
     val displayList = DisplayUtils.getAllDisplays(context)
-
-    Log.d("123123", "loadDisplayListData")
 
     return displayList.map { display ->
         val resolution =
