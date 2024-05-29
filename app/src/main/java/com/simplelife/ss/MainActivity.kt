@@ -385,11 +385,11 @@ fun loadAppListData(context: Context, keyword: String): List<AppItemBean> {
 
     val appList = AppUtils.getApps(context)
 
-    return appList.map { app ->
+    return appList.filter { app ->
+        app.name.contains(keyword, ignoreCase = true) && app.name.length <= 15
+    }.map { app ->
         AppItemBean(app.name, app.packageName)
-    }.filter { app ->
-        app.name.contains(keyword, ignoreCase = true)
-    }
+    }.sortedBy { app -> app.name }
 }
 
 
@@ -505,6 +505,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
                 })
 
         Text(text = name,
+            maxLines = 1,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = textColor,
@@ -515,6 +516,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () ->
 
 
         Text(text = "包名: $packageName",
+            maxLines = 1,
             color = textColor,
             fontSize = 12.sp,
             modifier = Modifier.constrainAs(text2) {
@@ -571,6 +573,7 @@ fun ScreenItem(
                 })
 
         Text(text = name,
+            maxLines = 1,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = textColor,
@@ -580,6 +583,7 @@ fun ScreenItem(
             })
 
         Text(text = "分辨率: $resolution",
+            maxLines = 1,
             color = textColor,
             fontSize = 12.sp,
             modifier = Modifier.constrainAs(text2) {
@@ -590,6 +594,7 @@ fun ScreenItem(
             })
 
         Text(text = "显示ID: $displayId",
+            maxLines = 1,
             color = textColor,
             fontSize = 12.sp,
             modifier = Modifier.constrainAs(text3) {
