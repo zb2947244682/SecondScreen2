@@ -31,10 +31,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Content() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.secondary)
-        .padding(0.dp, 50.dp, 0.dp, 0.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.secondary)
+            .padding(0.dp, 50.dp, 0.dp, 0.dp)
+    ) {
         Row(
             modifier = Modifier
                 .height(50.dp)
@@ -43,17 +45,19 @@ fun Content() {
         ) {
             Box(
                 modifier = Modifier
-                    .weight(1f),
+                    .weight(1f)
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Hello")
+                Text(text = "Hello", modifier = Modifier.align(Alignment.Center))
             }
             Box(
                 modifier = Modifier
-                    .weight(1f),
+                    .weight(1f)
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Hello")
+                Text(text = "Hello", modifier = Modifier.align(Alignment.Center))
             }
         }
     }
