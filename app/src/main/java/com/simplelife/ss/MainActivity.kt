@@ -222,15 +222,23 @@ fun Content() {
 
             var (rib1, rib2) = createRefs()
 
-            RoundedIconButton(R.drawable.ic_cast, { }, modifier = Modifier.constrainAs(rib1) {
-                end.linkTo(col1.end, margin = 10.dp)
-                bottom.linkTo(col1.bottom, margin = 10.dp)
-            })
+            RoundedIconButton(
+                R.drawable.ic_cast,
+                CustomButtonSuccess,
+                { },
+                modifier = Modifier.constrainAs(rib1) {
+                    end.linkTo(col1.end, margin = 10.dp)
+                    bottom.linkTo(col1.bottom, margin = 10.dp)
+                })
 
-            RoundedIconButton(R.drawable.ic_refresh, { }, modifier = Modifier.constrainAs(rib2) {
-                end.linkTo(col1.end, margin = 10.dp)
-                bottom.linkTo(rib1.top, margin = 10.dp)
-            })
+            RoundedIconButton(
+                R.drawable.ic_refresh,
+                CustomButtonPrimary,
+                { },
+                modifier = Modifier.constrainAs(rib2) {
+                    end.linkTo(col1.end, margin = 10.dp)
+                    bottom.linkTo(rib1.top, margin = 10.dp)
+                })
 
         }
     }
@@ -248,6 +256,7 @@ fun DefaultPreview() {
 @Composable
 fun RoundedIconButton(
     drawableId: Int,
+    color: Color,
     onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Box(
@@ -261,7 +270,7 @@ fun RoundedIconButton(
         Box(
             modifier = Modifier
                 .size(64.dp)
-                .background(CustomActive),
+                .background(color),
             contentAlignment = Alignment.Center
         ) {
             Image(
