@@ -63,6 +63,8 @@ fun Content() {
         mutableStateOf(listOf<AppItemBean>())
     }
 
+    var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+
     var context = LocalContext.current
 
     Box(
@@ -86,13 +88,11 @@ fun Content() {
 
                 })
 
-
-
             LaunchedEffect(Unit) {
                 // 执行一次性操作，比如初始化数据
                 // 此处可以调用挂起函数
                 displayList.value = loadDisplayListData(context)
-                appList.value = loadAppListData(context)
+                appList.value = loadAppListData(context, textFieldValue.text)
                 // 使用数据更新 UI 状态
             }
 
@@ -245,7 +245,7 @@ fun Content() {
 
                 val (input1, btn2) = createRefs()
 
-                var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+
 
                 BasicTextField(
                     value = textFieldValue,
@@ -271,9 +271,12 @@ fun Content() {
                         },
                 )
 
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier
+
+                //放大镜按钮
+                IconButton(onClick = {
+                    appList.value = loadAppListData(context, textFieldValue.text)
+                }, modifier = Modifier
                     .size(48.dp)
-//                    .background(Color.Red)
                     .constrainAs(btn2) {
                         end.linkTo(parent.end, margin = 16.dp)
                         centerVerticallyTo(parent)
@@ -308,7 +311,7 @@ fun Content() {
                 CustomButtonPrimary,
                 {
                     displayList.value = loadDisplayListData(context)
-                    appList.value = loadAppListData(context)
+                    appList.value = loadAppListData(context, textFieldValue.text)
                 },
                 modifier = Modifier.constrainAs(rib2) {
                     end.linkTo(col1.end, margin = 10.dp)
@@ -378,12 +381,14 @@ fun loadDisplayListData(context: Context): List<ScreenItemBean> {
 //读取应用列表
 //读取应用列表
 //读取应用列表
-fun loadAppListData(context: Context): List<AppItemBean> {
+fun loadAppListData(context: Context, keyword: String): List<AppItemBean> {
 
     val appList = AppUtils.getApps(context)
 
     return appList.map { app ->
         AppItemBean(app.name, app.packageName)
+    }.filter { app ->
+        app.name.contains(keyword, ignoreCase = true)
     }
 }
 
