@@ -10,9 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.simplelife.ss.ui.theme.*
 import com.simplelife.ss.ui.theme.SecondScreenTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,14 +35,13 @@ fun Content() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.secondary)
-            .padding(0.dp, 50.dp, 0.dp, 0.dp)
+            .background(color = CustomBackground)
+            .padding(top = 50.dp)
     ) {
         Row(
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth()
-                .background(Color.Red)
         ) {
             Box(
                 modifier = Modifier
@@ -49,7 +49,12 @@ fun Content() {
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Hello", modifier = Modifier.align(Alignment.Center))
+                Text(
+                    text = "屏幕列表",
+                    modifier = Modifier.align(Alignment.Center),
+                    color = CustomTextPrimary,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Box(
                 modifier = Modifier
@@ -57,11 +62,17 @@ fun Content() {
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Hello", modifier = Modifier.align(Alignment.Center))
+                Text(
+                    text = "应用列表",
+                    modifier = Modifier.align(Alignment.Center),
+                    color = CustomTextPrimary,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
