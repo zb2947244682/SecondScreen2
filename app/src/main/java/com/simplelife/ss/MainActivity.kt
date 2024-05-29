@@ -10,6 +10,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.simplelife.ss.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -43,21 +45,28 @@ fun Content() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = CustomBackground)
+//            .background(color = Color.Red)
             .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize()
         ) {
+
+            val (text1, row1, text2, row2) = createRefs()
+
             Text(
                 text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.constrainAs(text1) {
 
-                fontWeight = FontWeight.Bold
+                }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier
+                    .constrainAs(row1) {
+                        top.linkTo(text1.bottom, margin = 16.dp)
+                    }
                     .fillMaxWidth()
                     .height(100.dp)
                     .background(
@@ -92,15 +101,53 @@ fun Content() {
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             Text(
-                text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
-
-                fontWeight = FontWeight.Bold
+                text = "应用列表", fontSize = 18.sp, color = CustomTextPrimary,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.constrainAs(text2) {
+                    top.linkTo(row1.bottom, margin = 16.dp)
+                }
             )
-            
-            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color.White, shape = RoundedCornerShape(8.dp)
+                    )
+                    .constrainAs(row2) {
+                        top.linkTo(text2.bottom, margin = 16.dp)
+                        bottom.linkTo(parent.bottom, margin = 216.dp)
+                        height = Dimension.fillToConstraints
+                    }
+                    .verticalScroll(rememberScrollState())
+
+            ) {
+                ScreenItem(
+                    isActive = true,
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                )
+                ScreenItem(
+                    isActive = false,
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                )
+                ScreenItem(
+                    isActive = false,
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                )
+                ScreenItem(
+                    isActive = false,
+                    name = "显示器1",
+                    resolution = "1920x1080",
+                    displayId = 1,
+                )
+            }
         }
     }
 }
