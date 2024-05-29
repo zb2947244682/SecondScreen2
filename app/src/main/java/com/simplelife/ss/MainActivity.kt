@@ -125,7 +125,8 @@ fun CustomItem(name: String, resolution: String, displayId: Int, icon: Painter) 
             modifier = Modifier
                 .size(48.dp)
                 .constrainAs(image1) {
-
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
                 }
         )
 
@@ -134,20 +135,25 @@ fun CustomItem(name: String, resolution: String, displayId: Int, icon: Painter) 
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .constrainAs(text1) {
-
+                    start.linkTo(image1.end)
+                    top.linkTo(image1.top)
                 }
         )
 
         Text(text = "分辨率: $resolution",
             modifier = Modifier
                 .constrainAs(text2) {
-
+                    start.linkTo(image1.end)
+                    top.linkTo(text1.bottom)
+                    end.linkTo(parent.end, margin = 10.dp)
                 })
 
         Text(text = "显示ID: $displayId",
             modifier = Modifier
                 .constrainAs(text3) {
 
+                    start.linkTo(image1.end)
+                    top.linkTo(text2.bottom)
                 })
     }
 }
