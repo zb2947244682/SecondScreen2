@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
 
         // 启用边缘到边缘
 
-
         setContent {
             SecondScreenTheme() {
                 Content()
