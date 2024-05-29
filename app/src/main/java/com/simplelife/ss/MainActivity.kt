@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -19,8 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.simplelife.ss.ui.theme.*
-import com.simplelife.ss.ui.theme.SecondScreenTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +44,7 @@ fun Content() {
             .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
@@ -54,9 +52,7 @@ fun Content() {
                     .wrapContentHeight()
             ) {
                 Text(
-                    text = "屏幕列表",
-                    fontSize = 18.sp,
-                    color = CustomTextPrimary,
+                    text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
 
                     fontWeight = FontWeight.Bold
                 )
@@ -69,8 +65,7 @@ fun Content() {
                     .fillMaxWidth()
                     .height(100.dp)
                     .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(8.dp)
+                        color = Color.White, shape = RoundedCornerShape(8.dp)
                     )
 
             ) {
@@ -114,26 +109,45 @@ fun DefaultPreview() {
 
 @Composable
 fun CustomItem(name: String, resolution: String, displayId: Int, icon: Painter) {
-    Box(
+    ConstraintLayout(
         modifier = Modifier
             .height(100.dp)
             .wrapContentWidth()
             .padding(10.dp)
             .background(
-                color = Color.Gray,
-                shape = RoundedCornerShape(8.dp)
+                color = Color.Cyan, shape = RoundedCornerShape(8.dp)
             )
     ) {
+        val (image1, text1, text2, text3) = createRefs()
+
         Image(
-            painter = icon,
-            contentDescription = null, // 无需提供描述
-            modifier = Modifier.size(50.dp)
+            painter = icon, contentDescription = null, // 无需提供描述
+            modifier = Modifier
+                .size(48.dp)
+                .constrainAs(image1) {
+
+                }
         )
 
-        Text(text = name, fontWeight = FontWeight.Bold)
+        Text(
+            text = name,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .constrainAs(text1) {
 
-        Text(text = "分辨率: $resolution")
+                }
+        )
 
-        Text(text = "显示ID: $displayId")
+        Text(text = "分辨率: $resolution",
+            modifier = Modifier
+                .constrainAs(text2) {
+
+                })
+
+        Text(text = "显示ID: $displayId",
+            modifier = Modifier
+                .constrainAs(text3) {
+
+                })
     }
 }
