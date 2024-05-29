@@ -1,24 +1,22 @@
 package com.simplelife.ss
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,12 +24,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,11 +62,14 @@ fun Content() {
             .background(color = CustomBackground)
             .padding(top = 60.dp, start = 12.dp, end = 12.dp)
     ) {
+
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
 
             val (text1, row1, text2, col1, cl1) = createRefs()
+
+
 
             Text(text = "屏幕列表（点击你要投放的屏幕）",
                 fontSize = 18.sp,
@@ -206,6 +208,15 @@ fun Content() {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)
                 }
             }
+
+
+            var rib = createRef()
+
+            RoundedIconButton({ }, modifier = Modifier.constrainAs(rib) {
+                end.linkTo(col1.end, margin = 10.dp)
+                bottom.linkTo(col1.bottom, margin = 10.dp)
+            })
+
         }
     }
 }
@@ -219,9 +230,36 @@ fun DefaultPreview() {
     }
 }
 
+@Composable
+fun RoundedIconButton(
+    onClick: () -> Unit, modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(64.dp)
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(32.dp), clip = true) // 添加圆角阴影
+            .clip(shape = RoundedCornerShape(32.dp))
+            .clickable(onClick = onClick), // 留出一些空间以显示背景
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(64.dp)
+                .background(CustomActive),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite Button",
+                tint = Color.White // 设置图标颜色
+            )
+        }
+    }
+}
+
 
 @Composable
-fun AppItem(name: String, packageName: String, isActive: Boolean) {
+fun AppItem(name: String, packageName: String, isActive: Boolean, onClick: () -> Unit = {}) {
     val bgColor = if (!isActive) Color.White else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
     var painterId = if (isActive) R.drawable.ic_app_light else R.drawable.ic_app
@@ -234,6 +272,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean) {
             .background(
                 color = bgColor, shape = RoundedCornerShape(8.dp)
             )
+            .clickable(onClick = onClick)
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
@@ -268,7 +307,9 @@ fun AppItem(name: String, packageName: String, isActive: Boolean) {
 }
 
 @Composable
-fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boolean) {
+fun ScreenItem(
+    name: String, resolution: String, displayId: Int, isActive: Boolean, onClick: () -> Unit = {}
+) {
     val bgColor = if (!isActive) Color.White else CustomActive
     var textColor = if (!isActive) CustomTextLight else Color.White
     var painterId = if (isActive) R.drawable.ic_screen_light else R.drawable.ic_screen
@@ -281,6 +322,7 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boole
             .background(
                 color = bgColor, shape = RoundedCornerShape(8.dp)
             )
+            .clickable(onClick = onClick)
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
