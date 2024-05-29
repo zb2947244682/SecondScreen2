@@ -14,8 +14,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.sharp.Search
+import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -248,11 +251,7 @@ fun RoundedIconButton(
                 .background(CustomActive),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite Button",
-                tint = Color.White // 设置图标颜色
-            )
+            Text(text = "投放", color = Color.White, fontSize = 20.sp)
         }
     }
 }
