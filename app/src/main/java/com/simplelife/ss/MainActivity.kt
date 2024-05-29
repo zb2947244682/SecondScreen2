@@ -69,25 +69,25 @@ fun Content() {
                     )
 
             ) {
-                CustomItem(
+                ScreenItem(
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
                     icon = painterResource(id = R.drawable.ic_screen)
                 )
-                CustomItem(
+                ScreenItem(
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
                     icon = painterResource(id = R.drawable.ic_screen)
                 )
-                CustomItem(
+                ScreenItem(
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
                     icon = painterResource(id = R.drawable.ic_screen)
                 )
-                CustomItem(
+                ScreenItem(
                     name = "显示器1",
                     resolution = "1920x1080",
                     displayId = 1,
@@ -108,52 +108,48 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun CustomItem(name: String, resolution: String, displayId: Int, icon: Painter) {
+fun ScreenItem(name: String, resolution: String, displayId: Int, icon: Painter) {
     ConstraintLayout(
         modifier = Modifier
             .height(100.dp)
             .wrapContentWidth()
             .padding(10.dp)
             .background(
-                color = Color.Cyan, shape = RoundedCornerShape(8.dp)
+                color = Color.White, shape = RoundedCornerShape(8.dp)
             )
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
-        Image(
-            painter = icon, contentDescription = null, // 无需提供描述
+        Image(painter = icon, contentDescription = null, // 无需提供描述
             modifier = Modifier
-                .size(48.dp)
+                .size(100.dp)
                 .constrainAs(image1) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
-                }
-        )
+                })
 
         Text(
             text = name,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .constrainAs(text1) {
-                    start.linkTo(image1.end)
-                    top.linkTo(image1.top)
-                }
-        )
+            fontSize = 20.sp,
+            modifier = Modifier.constrainAs(text1) {
+                start.linkTo(image1.end)
+                top.linkTo(image1.top, margin = 6.dp)
+            })
 
         Text(text = "分辨率: $resolution",
-            modifier = Modifier
-                .constrainAs(text2) {
-                    start.linkTo(image1.end)
-                    top.linkTo(text1.bottom)
-                    end.linkTo(parent.end, margin = 10.dp)
-                })
+            fontSize = 12.sp, modifier = Modifier.constrainAs(text2) {
+                start.linkTo(image1.end)
+                top.linkTo(text1.bottom)
+                bottom.linkTo(text3.top)
+                end.linkTo(parent.end, margin = 10.dp)
+            })
 
         Text(text = "显示ID: $displayId",
-            modifier = Modifier
-                .constrainAs(text3) {
+            fontSize = 12.sp, modifier = Modifier.constrainAs(text3) {
 
-                    start.linkTo(image1.end)
-                    top.linkTo(text2.bottom)
-                })
+                start.linkTo(image1.end)
+                bottom.linkTo(parent.bottom, margin = 6.dp)
+            })
     }
 }
