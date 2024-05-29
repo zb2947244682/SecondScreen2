@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -52,27 +53,26 @@ fun Content() {
             modifier = Modifier.fillMaxSize()
         ) {
 
-            val (text1, row1, text2, row2) = createRefs()
+            val (text1, row1, text2, col1, row2) = createRefs()
 
-            Text(
-                text = "屏幕列表", fontSize = 18.sp, color = CustomTextPrimary,
+            Text(text = "屏幕列表",
+                fontSize = 18.sp,
+                color = CustomTextPrimary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(text1) {
 
-                }
-            )
+                })
 
-            Row(
-                modifier = Modifier
-                    .constrainAs(row1) {
-                        top.linkTo(text1.bottom, margin = 16.dp)
-                    }
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(
-                        color = Color.White, shape = RoundedCornerShape(8.dp)
-                    )
-                    .horizontalScroll(rememberScrollState())
+            Row(modifier = Modifier
+                .constrainAs(row1) {
+                    top.linkTo(text1.bottom, margin = 16.dp)
+                }
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(
+                    color = Color.White, shape = RoundedCornerShape(8.dp)
+                )
+                .horizontalScroll(rememberScrollState())
 
             ) {
                 ScreenItem(
@@ -101,62 +101,73 @@ fun Content() {
                 )
             }
 
-            Text(
-                text = "应用列表", fontSize = 18.sp, color = CustomTextPrimary,
+            Text(text = "应用列表",
+                fontSize = 18.sp,
+                color = CustomTextPrimary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(text2) {
                     top.linkTo(row1.bottom, margin = 16.dp)
-                }
-            )
+                })
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color.White, shape = RoundedCornerShape(8.dp)
-                    )
-                    .constrainAs(row2) {
-                        top.linkTo(text2.bottom, margin = 16.dp)
-                        bottom.linkTo(parent.bottom, margin = 216.dp)
-                        height = Dimension.fillToConstraints
-                    }
-                    .verticalScroll(rememberScrollState())
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Color.White, shape = RoundedCornerShape(8.dp)
+                )
+                .constrainAs(col1) {
+                    top.linkTo(text2.bottom, margin = 16.dp)
+                    bottom.linkTo(parent.bottom, margin = 216.dp)
+                    height = Dimension.fillToConstraints
+                }
+                .verticalScroll(rememberScrollState())
 
             ) {
                 AppItem(
-                    isActive = true,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = true, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
                 )
                 AppItem(
-                    isActive = false,
-                    name = "腾讯QQ",
-                    packageName = "com.qq.com"
+                    isActive = false, name = "腾讯QQ", packageName = "com.qq.com"
+                )
+            }
+
+            ConstraintLayout(modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(
+                    color = Color.White, shape = RoundedCornerShape(8.dp)
+                )
+                .constrainAs(row2) {
+                    top.linkTo(col1.bottom, margin = 16.dp)
+                }) {
+
+
+                val (image1, input1, btn1, btn2) = createRefs()
+
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = null, // 无需提供描述
+                    modifier = Modifier
+                        .size(24.dp)
+                        .constrainAs(image1) {
+                            centerVerticallyTo(parent)
+                            start.linkTo(parent.start, margin = 16.dp)
+                        }
                 )
             }
         }
@@ -191,8 +202,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean) {
         val (image1, text1, text2, text3) = createRefs()
 
 
-        Image(painter = painterResource(id = painterId),
-            contentDescription = null, // 无需提供描述
+        Image(painter = painterResource(id = painterId), contentDescription = null, // 无需提供描述
             modifier = Modifier
                 .size(48.dp)
                 .constrainAs(image1) {
@@ -201,8 +211,7 @@ fun AppItem(name: String, packageName: String, isActive: Boolean) {
                     centerVerticallyTo(parent)
                 })
 
-        Text(
-            text = name,
+        Text(text = name,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = textColor,
@@ -214,7 +223,8 @@ fun AppItem(name: String, packageName: String, isActive: Boolean) {
 
         Text(text = "分辨率: $packageName",
             color = textColor,
-            fontSize = 12.sp, modifier = Modifier.constrainAs(text2) {
+            fontSize = 12.sp,
+            modifier = Modifier.constrainAs(text2) {
                 start.linkTo(image1.end, margin = 16.dp)
                 bottom.linkTo(image1.bottom)
             })
@@ -238,8 +248,7 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boole
     ) {
         val (image1, text1, text2, text3) = createRefs()
 
-        Image(painter = painterResource(id = painterId),
-            contentDescription = null, // 无需提供描述
+        Image(painter = painterResource(id = painterId), contentDescription = null, // 无需提供描述
             modifier = Modifier
                 .size(100.dp)
                 .constrainAs(image1) {
@@ -247,8 +256,7 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boole
                     start.linkTo(parent.start)
                 })
 
-        Text(
-            text = name,
+        Text(text = name,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = textColor,
@@ -259,7 +267,8 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boole
 
         Text(text = "分辨率: $resolution",
             color = textColor,
-            fontSize = 12.sp, modifier = Modifier.constrainAs(text2) {
+            fontSize = 12.sp,
+            modifier = Modifier.constrainAs(text2) {
                 start.linkTo(image1.end)
                 top.linkTo(text1.bottom)
                 bottom.linkTo(text3.top)
@@ -268,7 +277,8 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, isActive: Boole
 
         Text(text = "显示ID: $displayId",
             color = textColor,
-            fontSize = 12.sp, modifier = Modifier.constrainAs(text3) {
+            fontSize = 12.sp,
+            modifier = Modifier.constrainAs(text3) {
 
                 start.linkTo(image1.end)
                 bottom.linkTo(parent.bottom, margin = 6.dp)
