@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -76,7 +77,7 @@ fun Content() {
 
             Text(text = "屏幕列表（点击你要投放的屏幕）",
                 fontSize = 18.sp,
-                color = CustomTextPrimary,
+                color = CustomTextLight,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(text1) {
 
@@ -122,7 +123,7 @@ fun Content() {
 
             Text(text = "应用列表（点击你要投放的应用）",
                 fontSize = 18.sp,
-                color = CustomTextPrimary,
+                color = CustomTextLight,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(text2) {
                     top.linkTo(row1.bottom, margin = 16.dp)
@@ -166,7 +167,7 @@ fun Content() {
 
             ConstraintLayout(modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(80.dp)
                 .background(
                     color = Color.White, shape = RoundedCornerShape(8.dp)
                 )
@@ -202,22 +203,33 @@ fun Content() {
                         },
                 )
 
-                Button(onClick = { }, colors = ButtonDefaults.buttonColors(
-                    containerColor = CustomButtonPrimary, contentColor = Color.White
-                ), modifier = Modifier.constrainAs(btn2) {
-                    end.linkTo(parent.end, margin = 16.dp)
-                    centerVerticallyTo(parent)
-                }) {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                IconButton(onClick = { /*TODO*/ }, modifier = Modifier
+                    .size(48.dp)
+//                    .background(Color.Red)
+                    .constrainAs(btn2) {
+                        end.linkTo(parent.end, margin = 16.dp)
+                        centerVerticallyTo(parent)
+                    }) {
+                    Icon(
+                        Icons.Default.Search,
+                        tint = CustomActive,
+                        modifier = Modifier.size(32.dp),
+                        contentDescription = null
+                    )
                 }
             }
 
 
-            var rib = createRef()
+            var (rib1, rib2) = createRefs()
 
-            RoundedIconButton({ }, modifier = Modifier.constrainAs(rib) {
+            RoundedIconButton(R.drawable.ic_cast, { }, modifier = Modifier.constrainAs(rib1) {
                 end.linkTo(col1.end, margin = 10.dp)
                 bottom.linkTo(col1.bottom, margin = 10.dp)
+            })
+
+            RoundedIconButton(R.drawable.ic_refresh, { }, modifier = Modifier.constrainAs(rib2) {
+                end.linkTo(col1.end, margin = 10.dp)
+                bottom.linkTo(rib1.top, margin = 10.dp)
             })
 
         }
@@ -235,6 +247,7 @@ fun DefaultPreview() {
 
 @Composable
 fun RoundedIconButton(
+    drawableId: Int,
     onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Box(
@@ -251,7 +264,11 @@ fun RoundedIconButton(
                 .background(CustomActive),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "投放", color = Color.White, fontSize = 20.sp)
+            Image(
+                painter = painterResource(id = drawableId),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp)
+            )
         }
     }
 }
