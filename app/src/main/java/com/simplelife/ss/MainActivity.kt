@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -67,6 +69,7 @@ fun Content() {
                     .background(
                         color = Color.White, shape = RoundedCornerShape(8.dp)
                     )
+                    .horizontalScroll(rememberScrollState())
 
             ) {
                 ScreenItem(
@@ -115,7 +118,7 @@ fun ScreenItem(name: String, resolution: String, displayId: Int, icon: Painter) 
             .wrapContentWidth()
             .padding(10.dp)
             .background(
-                color = Color.White, shape = RoundedCornerShape(8.dp)
+                color = CustomBackgroundLight, shape = RoundedCornerShape(8.dp)
             )
     ) {
         val (image1, text1, text2, text3) = createRefs()
