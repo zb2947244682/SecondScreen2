@@ -2,12 +2,14 @@ package com.simplelife.ss
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -289,30 +291,57 @@ fun Content() {
             //悬浮的按钮
             //悬浮的按钮
             var (rib1, rib2) = createRefs()
-            RoundedIconButton(
-                R.drawable.ic_cast,
-                CustomButtonSuccess,
-                { },
-                modifier = Modifier.constrainAs(rib1) {
-                    end.linkTo(col1.end, margin = 10.dp)
-                    bottom.linkTo(col1.bottom, margin = 10.dp)
-                })
 
+            //刷新按钮
             RoundedIconButton(
                 R.drawable.ic_refresh,
                 CustomButtonPrimary,
-                { },
+                {
+                    displayList.value = loadScreenListData(context)
+                },
                 modifier = Modifier.constrainAs(rib2) {
                     end.linkTo(col1.end, margin = 10.dp)
                     bottom.linkTo(rib1.top, margin = 10.dp)
+                })
+
+            //投屏按钮
+            RoundedIconButton(
+                R.drawable.ic_cast,
+                CustomButtonSuccess,
+                {
+                    displayList.value = loadScreenListData(context)
+                },
+                modifier = Modifier.constrainAs(rib1) {
+                    end.linkTo(col1.end, margin = 10.dp)
+                    bottom.linkTo(col1.bottom, margin = 10.dp)
                 })
 
         }
     }
 }
 
+
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
+//读取屏幕列表
 fun loadScreenListData(context: Context): List<ScreenItem> {
+
+    Log.d("123123", "loadScreenListData")
+
     val displayList = DisplayUtils.getAllDisplays(context)
+
     return displayList.map { display ->
         val resolution =
             "${display.mode.physicalWidth}x${display.mode.physicalHeight}" // 假设display对象有width和height属性
