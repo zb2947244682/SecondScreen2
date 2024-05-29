@@ -167,7 +167,7 @@ fun Content() {
 
             ConstraintLayout(modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
+                .height(60.dp)
                 .background(
                     color = Color.White, shape = RoundedCornerShape(8.dp)
                 )
