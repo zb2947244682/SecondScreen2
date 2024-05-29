@@ -7,5 +7,8 @@ var CustomBackgroundLight = Color(0XFFEFEFEF)
 
 var CustomActive = Color(0XFF1296db)
 
+var CustomButtonPrimary = Color(0XFF1296db)
+var CustomButtonCancel = Color(0XFFEFEFEF)
+
 var CustomTextPrimary = Color(0XFF333333)
 var CustomTextLight = Color(0XFF666666)
