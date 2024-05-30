@@ -1,6 +1,8 @@
 package com.simplelife.ss
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -66,11 +68,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+//        val resources: Resources = this.resources
+//        val config: Configuration = resources.configuration
+//        config.setLocale(Locale.JAPAN)
+//        resources.updateConfiguration(config, resources.displayMetrics)
 
         // 启用边缘到边缘
 
