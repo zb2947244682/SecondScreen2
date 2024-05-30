@@ -1,10 +1,7 @@
 package com.simplelife.ss
 
 import android.content.Context
-import android.content.Intent
-import android.hardware.display.DisplayManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,11 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -72,7 +66,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,8 +87,7 @@ class MainActivity : ComponentActivity() {
         val areNotificationsEnabled = NotificationUtils.isNotificationEnabled(this)
 
         if (!areNotificationsEnabled) {
-            ToastUtils.showShort(this, "打开通知获取最佳体验")
-//            NotificationUtils.openNotificationSettings(this)
+            ToastUtils.showShort(this, this.getString(R.string.s3))
         } else {
             NotificationUtils.createNotificationChannel(this)
 
@@ -159,12 +151,11 @@ fun Content() {
             val (text1, row1, text2, col1, cl1) = createRefs()
 
 
+            var MyText: String =
+                "${context.getString(R.string.s4)}（${context.getString(R.string.s5)}）"//"屏幕列表（点击你要投放的屏幕）"
 
 
-
-
-
-            Text(text = "屏幕列表（点击你要投放的屏幕）",
+            Text(text = MyText,
                 fontSize = 18.sp,
                 color = CustomTextLight,
                 fontWeight = FontWeight.Bold,
@@ -245,7 +236,12 @@ fun Content() {
 
             }
 
-            Text(text = "应用列表（点击你要投放的应用）",
+
+            var MyText2: String =
+                "${context.getString(R.string.s6)}（${context.getString(R.string.s7)}）"//"应用列表（点击你要投放的应用）",
+
+
+            Text(text = MyText2,
                 fontSize = 18.sp,
                 color = CustomTextLight,
                 fontWeight = FontWeight.Bold,

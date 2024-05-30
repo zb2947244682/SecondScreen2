@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">セカンドスクリーン</string>
+    <string name="s1">セカンドスクリーン</string>
+    <string name="s2">ここをクリックして投影画面にフォーカスを戻す</string>
+    <string name="s3">最適な体験のために通知を有効にしてください</string>
+    <string name="s4">画面リスト</string>
+    <string name="s5">投影したい画面を選択するにはタップしてください</string>
+    <string name="s6">アプリリスト</string>
+    <string name="s7">投影したいアプリをタップしてください</string>
+</resources>

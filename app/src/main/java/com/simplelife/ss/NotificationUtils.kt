@@ -11,19 +11,22 @@ import androidx.core.app.NotificationCompat
 
 object NotificationUtils {
 
-    private const val NOTIFICATION_ID = 1
-    private const val CHANNEL_ID = "reback"
-    private const val CHANNEL_NAME = "回到应用"
+    private var NOTIFICATION_ID = 1
+    private var CHANNEL_ID = "reback"
+    private var CHANNEL_NAME = ""
 
     fun isNotificationEnabled(context: Context): Boolean {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         return notificationManager.areNotificationsEnabled()
     }
+
     fun openNotificationSettings(context: Context) {
         val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
         context.startActivity(intent)
     }
+
     fun showNotification(context: Context, activity: Activity) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -36,24 +39,23 @@ object NotificationUtils {
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE)
 
-        val title = "第二屏幕"
-        val content = "让焦点回到投放的屏幕"
+        val title = context.getString(R.string.s1)
+        val content = context.getString(R.string.s2)
 
         // 创建通知
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_cast)
-            .setContentTitle(title)
-            .setContentText(content)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setOngoing(true) // 使通知变为常驻通知
-            .setAutoCancel(false) // 设置为不自动取消
+        val builder =
+            NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.ic_cast)
+                .setContentTitle(title).setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent)
+                .setOngoing(true) // 使通知变为常驻通知
+                .setAutoCancel(false) // 设置为不自动取消
 
         // 显示通知
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     fun createNotificationChannel(context: Context) {
+        CHANNEL_NAME = context.getString(R.string.s1)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val importance = NotificationManager.IMPORTANCE_DEFAULT

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Second Screen</string>
+    <string name="s1">Second Screen</string>
+    <string name="s2">Click here to refocus on the projected screen</string>
+    <string name="s3">Enable notifications for the best experience</string>
+    <string name="s4">Screen List</string>
+    <string name="s5">Tap to select the screen you want to project</string>
+    <string name="s6">App List</string>
+    <string name="s7">Tap the app you want to project</string>
 </resources>

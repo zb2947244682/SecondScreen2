@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">第二屏幕</string>
+    <string name="s1">第二屏幕</string>
+    <string name="s2">点击此处可让焦点回到投放的屏幕</string>
+    <string name="s3">打开通知获取最佳体验</string>
+    <string name="s4">屏幕列表</string>
+    <string name="s5">点击并选择你要投放的屏幕</string>
+    <string name="s6">应用列表</string>
+    <string name="s7">点击你要投放的应用</string>
 </resources>

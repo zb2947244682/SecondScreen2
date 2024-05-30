@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">세컨드 스크린</string>
+    <string name="s1">세컨드 스크린</string>
+    <string name="s2">여기를 클릭하여 투영된 화면으로 초점을 이동하세요</string>
+    <string name="s3">최상의 경험을 위해 알림을 활성화하세요</string>
+    <string name="s4">화면 목록</string>
+    <string name="s5">투영할 화면을 선택하려면 터치하세요</string>
+    <string name="s6">앱 목록</string>
+    <string name="s7">투영할 앱을 터치하세요</string>
+</resources>
